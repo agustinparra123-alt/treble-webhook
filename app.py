@@ -20,14 +20,34 @@ def webhook():
 
     file_name = "conversations.txt"
 
-    with open(file_name, "a", encoding="utf-8") as f:
-        f.write(f"\n=== Conversation {session_id} ({phone}) ===\n")
+    try:
+        with open(file_name, "a", encoding="utf-8") as f:
+            f.write(f"\n=== Conversation {session_id} ({phone}) ===\n")
 
-        for msg in messages:
-            sender = msg.get("sender")
-            text = msg.get("text", {}).get("message", "")
-            time = msg.get("created_at")
+            for msg in messages:
+                sender = msg.get("sender")
+                text = msg.get("text", {}).get("message", "")
+                time = msg.get("created_at")
 
-            f.write(f"{time} | {sender}: {text}\n")
+                f.write(f"{time} | {sender}: {text}\n")
+
+        print("✅ Conversation saved successfully")
+
+    except Exception as e:
+        print("❌ Error writing file:", str(e))
 
     return jsonify({"status": "ok"}), 200
+
+
+# 👇 TEMPORARY: View file in browser
+@app.route('/view')
+def view():
+    try:
+        with open("conversations.txt", "r", encoding="utf-8") as f:
+            return f.read()
+    except:
+        return "No file found yet."
+
+
+if __name__ == "__main__":
+    app.run()
