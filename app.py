@@ -25,7 +25,7 @@ messages = data.get("messages", [])
 
     try:
         with open(file_name, "a", encoding="utf-8") as f:
-            f.write(f"\n=== Conversation {session_id} ({phone}) ===\n")
+            f.write(f"\n\n=== Conversation {session_id} ({phone}) ===\n")
 
             for msg in messages:
                 sender = msg.get("sender")
@@ -47,7 +47,8 @@ messages = data.get("messages", [])
 def view():
     try:
         with open("conversations.txt", "r", encoding="utf-8") as f:
-            return f.read()
+            content = f.read()
+            return f"<pre>{content}</pre>"
     except:
         return "No file found yet."
 
