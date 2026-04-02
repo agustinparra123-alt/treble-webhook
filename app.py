@@ -16,7 +16,10 @@ def webhook():
     # Extract main info
     session_id = data.get("session", {}).get("external_id", "unknown")
     phone = data.get("user", {}).get("cellphone", "unknown")
-    messages = data.get("messages", [])
+    if data.get("event_type") != "session.close":
+    return jsonify({"status": "ignored"}), 200
+
+messages = data.get("messages", [])
 
     file_name = "conversations.txt"
 
